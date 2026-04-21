@@ -57,5 +57,33 @@ unsigned int faStr2(const char *str) {
 }
 
 unsigned int faStr3(const char *str) {
-    return 0; // stub
+    if (!str) return 0;
+    unsigned int totalLen = 0;
+    unsigned int wordCount = 0;
+    bool inWord = false;
+    unsigned int curLen = 0;
+
+    for (const char *p = str; *p; ++p) {
+        if (std::isspace(static_cast<unsigned char>(*p))) {
+            if (inWord) {
+                totalLen += curLen;
+                ++wordCount;
+                inWord = false;
+                curLen = 0;
+            }
+        } else {
+            if (!inWord) {
+                inWord = true;
+                curLen = 0;
+            }
+            ++curLen;
+        }
+    }
+    if (inWord) {
+        totalLen += curLen;
+        ++wordCount;
+    }
+    if (wordCount == 0) return 0;
+    double avg = static_cast<double>(totalLen) / wordCount;
+    return static_cast<unsigned int>(avg + 0.5);
 }
